@@ -9,26 +9,19 @@ import org.lwjgl.glfw.GLFW;
 
 public class Player extends Entity{
 
-    //private static final float RUN_SPEED = 30;
     private static final float RUN_SPEED = 0.5f;
-    private static final float TURN_SPEED = 3;
     private static final float JUMP_FORCE = 1.5f;
 
     private static final float TERRAIN_HEIGHT = 0;
 
     public Player(TexturedModel model, Vector3f position, Vector3f rotation, Vector3f scale) {
-        super(model, position, rotation, scale);
-        useGravity = true;
-    }
-
-    public Player(Entity entity){
-        super(entity.getModel(), entity.getPosition(), entity.getRotation(), entity.getScale());
+        super(model, position, rotation, scale, "player");
         useGravity = true;
     }
 
     boolean grounded = true;
 
-    public void move(double deltaTime){
+    public void move(){
         float playerAngle = getRotation().y;
 
         Vector2f forwardVector = new Vector2f((float) Math.sin(Math.toRadians(playerAngle)), (float) Math.cos(Math.toRadians(playerAngle))).normalize();

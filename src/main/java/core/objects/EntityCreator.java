@@ -10,14 +10,14 @@ import org.joml.Vector3f;
 
 public class EntityCreator {
 
-    public static Entity createEntity(Loader loader, String modelPath, String texturePath, Vector3f position, Vector3f rotation, Vector3f scale){
+    public static Entity createEntity(Loader loader, String modelPath, String texturePath, Vector3f position, Vector3f rotation, Vector3f scale, String name){
         try {
             RawModel rawModel = OBJFileLoader.loadOBJ(modelPath, loader);
             ModelTexture texture = new ModelTexture(loader.loadTexture(texturePath));
 
             TexturedModel texturedModel = new TexturedModel(rawModel, texture);
 
-            return new Entity(texturedModel, position, rotation, scale);
+            return new Entity(texturedModel, position, rotation, scale, name);
         } catch (Exception e) {
             e.printStackTrace();
         }

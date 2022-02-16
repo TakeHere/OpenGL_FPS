@@ -32,15 +32,15 @@ public class DemoScene extends Scene{
 
 
         displayEntity = EntityCreator.createEntity(loader, "res/models/teapot.obj", "res/textures/yellow.png"
-                ,new Vector3f(0,10,0),new Vector3f(0,0,0),new Vector3f(10,10,10));
+                ,new Vector3f(0,10,0),new Vector3f(0,0,0),new Vector3f(10,10,10), "display");
         displayEntity.getModel().getTexture().setShineDamper(10);
         displayEntity.getModel().getTexture().setReflectivity(1);
 
         groundEntity = EntityCreator.createEntity(loader, "res/models/floor.obj", "res/textures/grass.jpg"
-                ,new Vector3f(0,1,0), new Vector3f(0,0,0), new Vector3f(5,5,5));
+                ,new Vector3f(0,1,0), new Vector3f(0,0,0), new Vector3f(5,5,5), "ground");
 
         lightEntity = EntityCreator.createEntity(loader, "res/models/lightBulb.obj", "res/textures/yellow.png"
-                ,new Vector3f(100,100,100), new Vector3f(0,0,0), new Vector3f(100,100,100));
+                ,new Vector3f(100,100,100), new Vector3f(0,0,0), new Vector3f(100,100,100), "light");
 
 
         camera = new Camera();

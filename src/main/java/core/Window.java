@@ -1,5 +1,6 @@
 package core;
 
+import core.gui.ImGuiLayer;
 import core.listeners.KeyListener;
 import core.listeners.MouseListener;
 import core.objects.GameObject;
@@ -14,6 +15,7 @@ import core.scenes.GameScene;
 import core.scenes.Scene;
 import core.toolbox.Loader;
 import core.toolbox.Time;
+import imgui.internal.ImGui;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -24,10 +26,11 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.system.windows.User32.*;
 
 public class Window {
-    private final int width;
-    private final int height;
+    private final static int width = 1000;
+    private final static int height = 1000;
     private final String title;
     private long glfwWindow;
+    private ImGuiLayer imGuiLayer;
 
     private static Window window = null;
 
@@ -37,8 +40,6 @@ public class Window {
     private static boolean mouseLocked = false;
 
     private Window(){
-        this.width = 1000;
-        this.height = 1000;
         this.title = "Ethereal";
     }
 
@@ -110,11 +111,6 @@ public class Window {
 
         glfwSetWindowMonitor(glfwWindow, NULL, (max_width/2)-(width/2), (max_height/2) - (height/2), width, height, GLFW_DONT_CARE);
 
-        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
-        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
-        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
-        glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
-
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
         // Enable v-sync
@@ -125,6 +121,9 @@ public class Window {
 
         //OpenGL Initialization
         GL.createCapabilities();
+
+        this.imGuiLayer = new ImGuiLayer(glfwWindow);
+        imGuiLayer.initImGui();
     }
 
     int fps;
@@ -153,10 +152,9 @@ public class Window {
         changeScene(1);
 
         while (!glfwWindowShouldClose(glfwWindow)) {
-            //Poll events
             glfwPollEvents();
 
-            if (MouseListener.mouseButtonDown(0)){
+            if (MouseListener.mouseButtonDown(0) && !ImGui.getIO().getWantCaptureMouse()){
                 glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 mouseLocked = true;
             }else if (KeyListener.isKeyPressed(GLFW_KEY_ESCAPE)){
@@ -184,7 +182,8 @@ public class Window {
                 currentScene.update(dt);
             }
 
-            MouseListener.endFrame();
+            if (dt == 0) dt = 0.001f;
+            this.imGuiLayer.update(dt);
 
             glfwSwapBuffers(glfwWindow);
 
@@ -202,13 +201,14 @@ public class Window {
         }
 
         currentScene.cleanup();
+        imGuiLayer.destroyImGui();
     }
 
-    public int getWidth() {
+    public static int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public static int getHeight() {
         return height;
     }
 

@@ -9,15 +9,6 @@ import org.joml.Vector3f;
 public class Maths {
 
     public static Vector3f forwardVector(Vector3f rotation){
-        /*
-        return new Vector3f(
-                (float) (Math.cos(Math.toRadians(rotation.x))*Math.cos(Math.toRadians(rotation.y))),
-                (float) (Math.cos(Math.toRadians(rotation.x))*Math.sin(Math.toRadians(rotation.y))),
-                (float) Math.sin(Math.toRadians(rotation.x)));
-         */
-
-        System.out.println(rotation.x + "  " + rotation.y + "  " + rotation.z);
-
         return new Vector3f(
                 (float) (Math.cos(Math.toRadians(rotation.x)) * Math.sin(Math.toRadians(rotation.y))),
                 (float) -Math.sin(Math.toRadians(rotation.x)),

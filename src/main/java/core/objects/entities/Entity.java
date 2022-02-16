@@ -23,8 +23,8 @@ public class Entity extends GameObject {
 
     public static List<Entity> entities = new ArrayList<>();
 
-    public Entity(TexturedModel model, Vector3f position, Vector3f rotation, Vector3f scale) {
-        super(position, rotation, scale);
+    public Entity(TexturedModel model, Vector3f position, Vector3f rotation, Vector3f scale, String name) {
+        super(position, rotation, scale, name);
         this.model = model;
         updateTransformationMatrix();
         this.aabb = new AABB(this);

@@ -3,6 +3,7 @@ package core.objects.entities;
 import core.Window;
 import core.listeners.KeyListener;
 import core.listeners.MouseListener;
+import imgui.internal.ImGui;
 import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -19,10 +20,10 @@ public class Camera {
 
     public void rotate(Player player){
         if (Window.isMouseLocked()){
-            float angleChange = MouseListener.getDx() * 0.3f;
-            yAngleOffset += angleChange;
-            float pitchChange = MouseListener.getDy() * 0.3f;
-            pitch -= pitchChange;
+            float angleChange = ImGui.getIO().getMouseDeltaX() * 0.3f;
+            yAngleOffset -= angleChange;
+            float pitchChange = ImGui.getIO().getMouseDeltaY() * 0.3f;
+            pitch += pitchChange;
         }
 
         pitch = Math.clamp(-90,90, pitch);

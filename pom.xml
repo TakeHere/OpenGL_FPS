@@ -14,6 +14,7 @@
         <lwjgl.version>3.2.3</lwjgl.version>
         <joml.version>1.10.3</joml.version>
         <lwjgl.natives>natives-windows</lwjgl.natives>
+        <imgui.java.version>1.86.2</imgui.java.version>
     </properties>
 
     <dependencyManagement>
@@ -105,6 +106,22 @@
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-par</artifactId>
             <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.spair</groupId>
+            <artifactId>imgui-java-binding</artifactId>
+            <version>${imgui.java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.spair</groupId>
+            <artifactId>imgui-java-lwjgl3</artifactId>
+            <version>${imgui.java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.spair</groupId>
+            <artifactId>imgui-java-natives-windows</artifactId>
+            <version>${imgui.java.version}</version>
         </dependency>
     </dependencies>
 

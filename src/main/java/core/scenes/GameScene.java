@@ -49,18 +49,22 @@ public class GameScene extends Scene{
 
 
         axis = EntityCreator.createEntity(loader, "res/models/axis.obj", "res/textures/axis.png"
-                ,new Vector3f(0,40,0),new Vector3f(0,0,0),new Vector3f(10,10,10));
+                ,new Vector3f(0,40,0),new Vector3f(0,0,0),new Vector3f(10,10,10), "axis");
 
         displayEntity = EntityCreator.createEntity(loader, "res/models/teapot.obj", "res/textures/yellow.png"
-                ,new Vector3f(0,10,0),new Vector3f(0,0,0),new Vector3f(10,10,10));
+                ,new Vector3f(0,10,0),new Vector3f(0,0,0),new Vector3f(10,10,10), "display");
         displayEntity.getModel().getTexture().setShineDamper(10);
         displayEntity.getModel().getTexture().setReflectivity(1);
 
         groundEntity = EntityCreator.createEntity(loader, "res/models/floor.obj", "res/textures/grass.jpg"
-                ,new Vector3f(0,1,0), new Vector3f(0,0,0), new Vector3f(100,5,100));
+                ,new Vector3f(0,1,0), new Vector3f(0,0,0), new Vector3f(100,5,100), "ground");
 
-        player = new Player(EntityCreator.createEntity(loader, "res/models/teapot.obj", "res/textures/yellow.png"
-                ,new Vector3f(0,10,0),new Vector3f(0,0,0),new Vector3f(10,10,10)));
+        player = new Player(new TexturedModel(
+                OBJFileLoader.loadOBJ("res/models/teapot.obj", loader),
+                new ModelTexture(loader.loadTexture("res/textures/yellow.png"))),
+                new Vector3f(0,1,0),
+                new Vector3f(0,0,0),
+                new Vector3f(10,10,10));
 
         RawModel rawModelBullet = OBJFileLoader.loadOBJ("res/models/debugSphere.obj", loader);
         ModelTexture bulletTexture = new ModelTexture(loader.loadTexture("res/textures/blue.png"));
@@ -74,7 +78,7 @@ public class GameScene extends Scene{
 
 
         MouseListener.addPressEvent(0, () -> {
-            Entity bulletEntity = new Entity(bulletModel, camera.getPosition(), new Vector3f(0,0,0), new Vector3f(10,10,10));
+            Entity bulletEntity = new Entity(bulletModel, camera.getPosition(), new Vector3f(0,0,0), new Vector3f(10,10,10), "bullet");
             bulletEntity.velocity = Maths.forwardVector(new Vector3f(camera.getPitch(), camera.getYaw(), camera.getRoll())).mul(1);
 
             bullets.add(bulletEntity);
@@ -88,7 +92,7 @@ public class GameScene extends Scene{
         displayEntity.addRotation(new Vector3f(0,1,0));
         displayEntity.addPosition(new Vector3f(0, (float) Math.cos(Math.toRadians(System.currentTimeMillis()) / 5) / 10,0));
 
-        player.move(dt);
+        player.move();
         camera.rotate(player);
 
         camera.setPosition(new Vector3f(player.getPosition().x + 0, player.getPosition().y + 10, player.getPosition().z + 0));
