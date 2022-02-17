@@ -11,6 +11,7 @@ import core.toolbox.Maths;
 import org.joml.Vector3f;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class DemoScene extends Scene{
 
@@ -26,8 +27,6 @@ public class DemoScene extends Scene{
 
     @Override
     public void init() {
-
-        renderer = new MasterRenderer();
         loader = new Loader();
 
 
@@ -45,7 +44,9 @@ public class DemoScene extends Scene{
 
         camera = new Camera();
         camera.setPosition(new Vector3f(0,15,15));
-        light = new Light(lightEntity.getPosition(), new Color(255, 255, 255));
+        light = new Light(lightEntity.getPosition(), new Color(255, 255, 255), new Vector3f(1, 0.01f, 0.002f), "light");
+
+        renderer = new MasterRenderer(camera);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class DemoScene extends Scene{
         renderer.processEntity(displayEntity);
         renderer.processEntity(lightEntity);
 
-        renderer.render(light, camera);
+        renderer.render(Arrays.asList(light), camera);
     }
 
     @Override

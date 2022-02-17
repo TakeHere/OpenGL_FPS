@@ -18,7 +18,10 @@ public class Camera {
 
     private float yAngleOffset = 0;
 
-    public void rotate(Player player){
+    public static boolean freecam = false;
+    private final float freecamSpeed = 1;
+
+    public void move(Player player){
         if (Window.isMouseLocked()){
             float angleChange = ImGui.getIO().getMouseDeltaX() * 0.3f;
             yAngleOffset -= angleChange;
@@ -31,6 +34,45 @@ public class Camera {
         player.getRotation().y = yAngleOffset;
 
         this.yaw = 180-(yAngleOffset);
+
+        if(freecam){
+            freecam();
+        }else{
+            setPosition(new Vector3f(player.getPosition().x + 0, player.getPosition().y + 10, player.getPosition().z + 0));
+        }
+    }
+
+    private void freecam(){
+        float angle = 180 - yaw;
+
+        Vector2f forwardVector = new Vector2f((float) java.lang.Math.sin(java.lang.Math.toRadians(angle)), (float) java.lang.Math.cos(java.lang.Math.toRadians(angle))).normalize();
+        Vector2f rightVector = new Vector2f((float) java.lang.Math.sin(java.lang.Math.toRadians(angle - 90)), (float) java.lang.Math.cos(java.lang.Math.toRadians(angle - 90))).normalize();
+
+        int vertical = 0;
+        int horizontal = 0;
+
+        if(KeyListener.isKeyPressed(GLFW.GLFW_KEY_W)){
+            horizontal = 1;
+        }else if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_S)){
+            horizontal = -1;
+        }
+
+        if(KeyListener.isKeyPressed(GLFW.GLFW_KEY_D)){
+            vertical = 1;
+        }else if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_A)){
+            vertical = -1;
+        }
+
+        Vector2f move = forwardVector.mul(horizontal).add(rightVector.mul(vertical));
+        move.mul(freecamSpeed);
+        getPosition().x += move.x;
+        getPosition().z += move.y;
+
+        if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_E)){
+            position.y+=freecamSpeed;
+        }else if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_Q)){
+            position.y-=freecamSpeed;
+        }
     }
 
     public Vector3f getPosition() {

@@ -8,6 +8,7 @@ import core.objects.models.TexturedModel;
 import core.renderers.debug.DebugRenderer;
 import core.renderers.debug.DebugSphere;
 import core.shaders.StaticShader;
+import core.shadows.ShadowMapMasterRenderer;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
@@ -20,9 +21,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class MasterRenderer {
 
-    private static final float FOV = 90;
-    private static final float NEAR_PLANE = 0.01f;
-    private static final float FAR_PLANE = 1000;
+    public static final float FOV = 90;
+    public static final float NEAR_PLANE = 0.01f;
+    public static final float FAR_PLANE = 1000;
 
     private static final float RED = 0.5f;
     private static final float GREEN = 0.5f;
@@ -34,16 +35,18 @@ public class MasterRenderer {
 
     private EntityRenderer entityRenderer;
     private DebugRenderer debugRenderer;
+    private ShadowMapMasterRenderer shadowMapRenderer;
 
     private Map<TexturedModel, List<Entity>> entities = new HashMap<>();
     private static List<DebugSphere> debugSpheres = new ArrayList<>();
 
-    public MasterRenderer(){
+    public MasterRenderer(Camera camera){
         enableCulling();
         createProjectionMatrix();
 
         entityRenderer = new EntityRenderer(shader, projectionMatrix);
         debugRenderer = new DebugRenderer(shader, projectionMatrix);
+        this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
     }
 
     public static void enableCulling(){
@@ -55,12 +58,12 @@ public class MasterRenderer {
         GL11.glDisable(GL_CULL_FACE);
     }
 
-    public void render(Light sun, Camera camera){
+    public void render(List<Light> lights, Camera camera){
         prepare();
 
         shader.start();
         shader.loadSkyColor(RED, GREEN, BLUE);
-        shader.loadLight(sun);
+        shader.loadLights(lights);
         shader.loadViewMatrix(camera);
         entityRenderer.render(entities);
         debugRenderer.render(debugSpheres);
@@ -87,6 +90,8 @@ public class MasterRenderer {
         debugSpheres.add(debugSphere);
     }
 
+
+
     public void prepare(){
         GL11.glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -99,8 +104,21 @@ public class MasterRenderer {
                 NEAR_PLANE, FAR_PLANE);
     }
 
+    public void renderShadowMap(List<Entity> entitiyList, Light sun){
+        for (Entity entity : entitiyList){
+            processEntity(entity);
+        }
+        shadowMapRenderer.render(entities, sun);
+        entities.clear();
+    }
+
+    public int getShadowMapTexture(){
+        return shadowMapRenderer.getShadowMap();
+    }
+
     public void cleanup(){
         shader.cleanup();
         debugSpheres.clear();
+        shadowMapRenderer.cleanUp();
     }
 }

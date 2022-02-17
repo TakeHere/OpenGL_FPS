@@ -4,6 +4,7 @@ import core.gui.ImGuiLayer;
 import core.listeners.KeyListener;
 import core.listeners.MouseListener;
 import core.objects.GameObject;
+import core.objects.entities.Camera;
 import core.objects.entities.Entity;
 import core.objects.models.ModelTexture;
 import core.objects.models.RawModel;
@@ -17,6 +18,7 @@ import core.toolbox.Loader;
 import core.toolbox.Time;
 import imgui.internal.ImGui;
 import org.lwjgl.Version;
+import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
@@ -133,6 +135,10 @@ public class Window {
         float beginTime = Time.getTime();
         float endTime = Time.getTime();
         float dt = -1.0f;
+
+        KeyListener.addPressEvent(GLFW_KEY_C, () -> {
+            Camera.freecam = !Camera.freecam;
+        });
 
         Loader loader = new Loader();
 

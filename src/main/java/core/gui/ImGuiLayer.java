@@ -1,6 +1,7 @@
 package core.gui;
 
 import core.Window;
+import core.listeners.KeyListener;
 import core.listeners.MouseListener;
 import imgui.ImGuiIO;
 import imgui.ImGuiStorage;
@@ -83,6 +84,22 @@ public class ImGuiLayer {
         // GLFW callbacks to handle user input
 
         glfwSetKeyCallback(glfwWindow, (w, key, scancode, action, mods) -> {
+            if (!ImGui.getIO().getWantCaptureMouse()){
+                if (action == GLFW_PRESS){
+                    KeyListener.pressEvents.forEach((integer, runnable) -> {
+                        if (key == integer){
+                            runnable.run();
+                        }
+                    });
+                }else if (action == GLFW_RELEASE){
+                    KeyListener.releaseEvents.forEach((integer, runnable) -> {
+                        if (key == integer){
+                            runnable.run();
+                        }
+                    });
+                }
+            }
+
             if (action == GLFW_PRESS) {
                 io.setKeysDown(key, true);
             } else if (action == GLFW_RELEASE) {

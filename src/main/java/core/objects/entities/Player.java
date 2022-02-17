@@ -22,29 +22,33 @@ public class Player extends Entity{
     boolean grounded = true;
 
     public void move(){
-        float playerAngle = getRotation().y;
+        if (!Camera.freecam){
+            float playerAngle = getRotation().y;
 
-        Vector2f forwardVector = new Vector2f((float) Math.sin(Math.toRadians(playerAngle)), (float) Math.cos(Math.toRadians(playerAngle))).normalize();
-        Vector2f rightVector = new Vector2f((float) Math.sin(Math.toRadians(playerAngle - 90)), (float) Math.cos(Math.toRadians(playerAngle - 90))).normalize();
+            Vector2f forwardVector = new Vector2f((float) Math.sin(Math.toRadians(playerAngle)), (float) Math.cos(Math.toRadians(playerAngle))).normalize();
+            Vector2f rightVector = new Vector2f((float) Math.sin(Math.toRadians(playerAngle - 90)), (float) Math.cos(Math.toRadians(playerAngle - 90))).normalize();
 
-        int vertical = 0;
-        int horizontal = 0;
+            int vertical = 0;
+            int horizontal = 0;
 
-        if(KeyListener.isKeyPressed(GLFW.GLFW_KEY_W)){
-            horizontal = 1;
-        }else if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_S)){
-            horizontal = -1;
+            if(KeyListener.isKeyPressed(GLFW.GLFW_KEY_W)){
+                horizontal = 1;
+            }else if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_S)){
+                horizontal = -1;
+            }
+
+            if(KeyListener.isKeyPressed(GLFW.GLFW_KEY_D)){
+                vertical = 1;
+            }else if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_A)){
+                vertical = -1;
+            }
+
+            Vector2f move = forwardVector.mul(horizontal).add(rightVector.mul(vertical));
+            move.mul(RUN_SPEED);
+            velocity = new Vector3f(move.x, velocity.y, move.y);
+        }else {
+            velocity = new Vector3f(0, velocity.y, 0);
         }
-
-        if(KeyListener.isKeyPressed(GLFW.GLFW_KEY_D)){
-            vertical = 1;
-        }else if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_A)){
-            vertical = -1;
-        }
-
-        Vector2f move = forwardVector.mul(horizontal).add(rightVector.mul(vertical));
-        move.mul(RUN_SPEED);
-        velocity = new Vector3f(move.x, velocity.y, move.y);
 
         if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_SPACE)){
             if (grounded){
