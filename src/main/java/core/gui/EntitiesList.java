@@ -14,11 +14,14 @@ import java.util.List;
 public class EntitiesList {
 
     public static ImInt currentObject = new ImInt(0);
+    public static int imageId = -1;
 
     public static void update(){
         List<String> gameObjectsNames = new ArrayList<>();
-        for (GameObject gameObject : GameObject.gameObjects) {
-            gameObjectsNames.add(gameObject.getName());
+        synchronized (GameObject.gameObjects){
+            for (GameObject gameObject : GameObject.gameObjects) {
+                gameObjectsNames.add(gameObject.getName());
+            }
         }
 
 
@@ -26,6 +29,9 @@ public class EntitiesList {
 
         ImGui.begin("Gameobjects list", new ImBoolean(true), ImGuiWindowFlags.AlwaysAutoResize);
         ImGui.setWindowPos(10,10);
+
+        if (imageId != -1)
+            ImGui.imageButton(imageId, 500,500);
 
         ImGui.labelText(" ", "Gameobjects in the scene");
         ImGui.listBox(" ", currentObject, gameObjectsNames.toArray(new String[0]), 15);

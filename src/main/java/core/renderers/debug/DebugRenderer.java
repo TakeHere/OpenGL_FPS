@@ -7,6 +7,7 @@ import core.objects.models.TexturedModel;
 import core.renderers.MasterRenderer;
 import core.shaders.StaticShader;
 import core.toolbox.Maths;
+import core.toolbox.Vector3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -64,7 +65,7 @@ public class DebugRenderer {
     }
 
     private void prepareInstance(DebugSphere sphere){
-        Matrix4f transformationMatrix = Maths.createTransformationMatrix(sphere.getPosition(), 0, 0, 0, new Vector3f(sphere.getScale(), sphere.getScale(), sphere.getScale()));
+        Matrix4f transformationMatrix = Maths.createTransformationMatrix(sphere.getPosition().toJomlVector(), Vector3.ZERO.toJomlVector(), new Vector3f(sphere.getScale(), sphere.getScale(), sphere.getScale()));
         shader.loadTransformationMatrix(transformationMatrix);
         shader.loadOffset(0,0);
     }

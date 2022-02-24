@@ -8,7 +8,6 @@ import core.objects.models.TexturedModel;
 import core.renderers.debug.DebugRenderer;
 import core.renderers.debug.DebugSphere;
 import core.shaders.StaticShader;
-import core.shadows.ShadowMapMasterRenderer;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
@@ -22,7 +21,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class MasterRenderer {
 
     public static final float FOV = 90;
-    public static final float NEAR_PLANE = 0.01f;
+    public static final float NEAR_PLANE = 0.001f;
     public static final float FAR_PLANE = 1000;
 
     private static final float RED = 0.5f;
@@ -35,7 +34,6 @@ public class MasterRenderer {
 
     private EntityRenderer entityRenderer;
     private DebugRenderer debugRenderer;
-    private ShadowMapMasterRenderer shadowMapRenderer;
 
     private Map<TexturedModel, List<Entity>> entities = new HashMap<>();
     private static List<DebugSphere> debugSpheres = new ArrayList<>();
@@ -46,7 +44,6 @@ public class MasterRenderer {
 
         entityRenderer = new EntityRenderer(shader, projectionMatrix);
         debugRenderer = new DebugRenderer(shader, projectionMatrix);
-        this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
     }
 
     public static void enableCulling(){
@@ -58,7 +55,7 @@ public class MasterRenderer {
         GL11.glDisable(GL_CULL_FACE);
     }
 
-    public void render(List<Light> lights, Camera camera){
+    public void render(List<Light> lights, Camera camera, boolean deleteLists){
         prepare();
 
         shader.start();
@@ -69,8 +66,10 @@ public class MasterRenderer {
         debugRenderer.render(debugSpheres);
         shader.stop();
 
-        entities.clear();
-        debugSpheres.clear();
+        if (deleteLists){
+            entities.clear();
+            debugSpheres.clear();
+        }
     }
 
     public void processEntity(Entity entity){
@@ -104,21 +103,8 @@ public class MasterRenderer {
                 NEAR_PLANE, FAR_PLANE);
     }
 
-    public void renderShadowMap(List<Entity> entitiyList, Light sun){
-        for (Entity entity : entitiyList){
-            processEntity(entity);
-        }
-        shadowMapRenderer.render(entities, sun);
-        entities.clear();
-    }
-
-    public int getShadowMapTexture(){
-        return shadowMapRenderer.getShadowMap();
-    }
-
     public void cleanup(){
         shader.cleanup();
         debugSpheres.clear();
-        shadowMapRenderer.cleanUp();
     }
 }

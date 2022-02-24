@@ -1,0 +1,31 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JavaFPS:jar">
+    <output-path>$PROJECT_DIR$/</output-path>
+    <root id="archive" name="JavaFPS.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="JavaFPS" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-nuklear/3.2.3/lwjgl-nuklear-3.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-assimp/3.2.3/lwjgl-assimp-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/io/github/spair/imgui-java-natives-windows/1.86.2/imgui-java-natives-windows-1.86.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-par/3.2.3/lwjgl-par-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-nuklear/3.2.3/lwjgl-nuklear-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-stb/3.2.3/lwjgl-stb-3.2.3-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/io/github/spair/imgui-java-lwjgl3/1.86.2/imgui-java-lwjgl3-1.86.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-assimp/3.2.3/lwjgl-assimp-3.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/io/github/spair/imgui-java-binding/1.86.2/imgui-java-binding-1.86.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/joml/joml/1.10.3/joml-1.10.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-stb/3.2.3/lwjgl-stb-3.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl-par/3.2.3/lwjgl-par-3.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

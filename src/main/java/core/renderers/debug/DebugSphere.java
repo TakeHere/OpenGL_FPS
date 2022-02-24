@@ -1,11 +1,11 @@
 package core.renderers.debug;
 
 import core.objects.models.TexturedModel;
-import org.joml.Vector3f;
+import core.toolbox.Vector3;
 
 public class DebugSphere {
 
-    private Vector3f position;
+    private Vector3 position;
     private float scale;
 
     public static TexturedModel redTexture;
@@ -14,7 +14,7 @@ public class DebugSphere {
 
     public TexturedModel currentTexture;
 
-    public DebugSphere(Vector3f position, float scale, int texture) {
+    public DebugSphere(Vector3 position, float scale, int texture) {
         this.position = position;
         this.scale = scale;
         setTexture(texture);
@@ -37,7 +37,7 @@ public class DebugSphere {
         }
     }
 
-    public Vector3f getPosition() {
+    public Vector3 getPosition() {
         return position;
     }
 

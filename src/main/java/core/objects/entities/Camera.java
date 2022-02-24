@@ -3,6 +3,8 @@ package core.objects.entities;
 import core.Window;
 import core.listeners.KeyListener;
 import core.listeners.MouseListener;
+import core.toolbox.Vector2;
+import core.toolbox.Vector3;
 import imgui.internal.ImGui;
 import org.joml.Math;
 import org.joml.Vector2f;
@@ -11,7 +13,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class Camera {
 
-    private Vector3f position = new Vector3f(0,0,0);
+    private Vector3 position = new Vector3(0,0,0);
     private float pitch;
     private float yaw;
     private float roll;
@@ -19,7 +21,9 @@ public class Camera {
     private float yAngleOffset = 0;
 
     public static boolean freecam = false;
+
     private final float freecamSpeed = 1;
+    private final Vector3 offset = new Vector3(0,30,0);
 
     public void move(Player player){
         if (Window.isMouseLocked()){
@@ -38,15 +42,15 @@ public class Camera {
         if(freecam){
             freecam();
         }else{
-            setPosition(new Vector3f(player.getPosition().x + 0, player.getPosition().y + 10, player.getPosition().z + 0));
+            setPosition(new Vector3(player.getPosition().x + offset.x, player.getPosition().y + offset.y, player.getPosition().z + offset.z));
         }
     }
 
     private void freecam(){
         float angle = 180 - yaw;
 
-        Vector2f forwardVector = new Vector2f((float) java.lang.Math.sin(java.lang.Math.toRadians(angle)), (float) java.lang.Math.cos(java.lang.Math.toRadians(angle))).normalize();
-        Vector2f rightVector = new Vector2f((float) java.lang.Math.sin(java.lang.Math.toRadians(angle - 90)), (float) java.lang.Math.cos(java.lang.Math.toRadians(angle - 90))).normalize();
+        Vector2 forwardVector = new Vector2(Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle))).normalize();
+        Vector2 rightVector = new Vector2(Math.sin(Math.toRadians(angle - 90)), Math.cos(Math.toRadians(angle - 90))).normalize();
 
         int vertical = 0;
         int horizontal = 0;
@@ -63,7 +67,7 @@ public class Camera {
             vertical = -1;
         }
 
-        Vector2f move = forwardVector.mul(horizontal).add(rightVector.mul(vertical));
+        Vector2 move = forwardVector.mul(horizontal).add(rightVector.mul(vertical));
         move.mul(freecamSpeed);
         getPosition().x += move.x;
         getPosition().z += move.y;
@@ -75,7 +79,7 @@ public class Camera {
         }
     }
 
-    public Vector3f getPosition() {
+    public Vector3 getPosition() {
         return position;
     }
 
@@ -91,7 +95,7 @@ public class Camera {
         return roll;
     }
 
-    public void setPosition(Vector3f position) {
+    public void setPosition(Vector3 position) {
         this.position = position;
     }
 
@@ -105,5 +109,9 @@ public class Camera {
 
     public void setRoll(float roll) {
         this.roll = roll;
+    }
+
+    public Vector3 getOffset() {
+        return offset;
     }
 }

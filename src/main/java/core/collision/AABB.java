@@ -3,13 +3,14 @@ package core.collision;
 import core.objects.entities.Entity;
 import core.renderers.MasterRenderer;
 import core.renderers.debug.DebugSphere;
+import core.toolbox.Vector3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class AABB {
 
-    private Vector3f positionMin;
-    private Vector3f positionMax;
+    private Vector3 positionMin;
+    private Vector3 positionMax;
     private Entity entity;
 
     public AABB(Entity entity) {
@@ -44,24 +45,27 @@ public class AABB {
             if (point.z > maxZ) maxZ = point.z;
         }
 
-        Vector3f minLocation = new Vector3f(minX, minY, minZ);
-        Vector3f maxLocation = new Vector3f(maxX, maxY, maxZ);
+        Vector3 minLocation = new Vector3(minX, minY, minZ);
+        Vector3 maxLocation = new Vector3(maxX, maxY, maxZ);
 
-        minLocation = minLocation.mul(entity.getScale()).add(entity.getPosition());
-        maxLocation = maxLocation.mul(entity.getScale()).add(entity.getPosition());
+        minLocation = minLocation.mul(entity.getScale());
+        maxLocation = maxLocation.mul(entity.getScale());
 
-        MasterRenderer.addDebugSphere(new DebugSphere(minLocation,  1, 0));
-        MasterRenderer.addDebugSphere(new DebugSphere(maxLocation,  1, 1));
+        minLocation = minLocation.add(entity.getPosition());
+        maxLocation = maxLocation.add(entity.getPosition());
+
+        //MasterRenderer.addDebugSphere(new DebugSphere(minLocation,  1, 0));
+        //MasterRenderer.addDebugSphere(new DebugSphere(maxLocation,  1, 1));
 
         positionMin = minLocation;
         positionMax = maxLocation;
     }
 
-    public Vector3f getPositionMin() {
+    public Vector3 getPositionMin() {
         return positionMin;
     }
 
-    public Vector3f getPositionMax() {
+    public Vector3 getPositionMax() {
         return positionMax;
     }
 }

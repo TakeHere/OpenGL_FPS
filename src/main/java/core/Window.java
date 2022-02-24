@@ -4,6 +4,7 @@ import core.gui.ImGuiLayer;
 import core.listeners.KeyListener;
 import core.listeners.MouseListener;
 import core.objects.GameObject;
+import core.objects.entities.Bullet;
 import core.objects.entities.Camera;
 import core.objects.entities.Entity;
 import core.objects.models.ModelTexture;
@@ -15,12 +16,15 @@ import core.scenes.DemoScene;
 import core.scenes.GameScene;
 import core.scenes.Scene;
 import core.toolbox.Loader;
+import core.toolbox.RunNextFrame;
 import core.toolbox.Time;
 import imgui.internal.ImGui;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+
+import java.util.Timer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -50,8 +54,11 @@ public class Window {
 
         currentSceneIndex = newScene;
 
-        if (currentScene != null)
+        if (currentScene != null){
             currentScene.cleanup();
+            Scene.timer.cancel();
+            Scene.timer = new Timer();
+        }
 
         switch (newScene){
             case 0:
@@ -175,14 +182,23 @@ public class Window {
             }
 
             if (dt >= 0){
-                for (Entity entity : Entity.entities) {
-                    entity.updateAABB();
-                    if (entity.useGravity)
-                        entity.velocity.y += Entity.GRAVITY * dt;
+                synchronized (Entity.entities){
+                    for (Entity entity : Entity.entities) {
+                        entity.updateAABB();
+                        if (entity.useGravity){
+                            if (entity instanceof Bullet){
+                                entity.velocity.y += Consts.BULLET_GRAVITY * dt;
+                            }else {
+                                entity.velocity.y += Consts.GRAVITY * dt;
+                            }
+                        }
+                    }
                 }
 
-                for (GameObject gameObject : GameObject.gameObjects) {
-                    gameObject.addPosition(gameObject.velocity);
+                synchronized (GameObject.gameObjects){
+                    for (GameObject gameObject : GameObject.gameObjects) {
+                        gameObject.addPosition(gameObject.velocity);
+                    }
                 }
 
                 currentScene.update(dt);
@@ -190,6 +206,11 @@ public class Window {
 
             if (dt == 0) dt = 0.001f;
             this.imGuiLayer.update(dt);
+
+            for (Runnable runnable : RunNextFrame.getRunNextFrame()) {
+                runnable.run();
+            }
+            RunNextFrame.clear();
 
             glfwSwapBuffers(glfwWindow);
 

@@ -3,18 +3,19 @@ package core.objects.entities;
 import core.listeners.KeyListener;
 import core.listeners.MouseListener;
 import core.objects.models.TexturedModel;
+import core.toolbox.Vector3;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public class Player extends Entity{
 
-    private static final float RUN_SPEED = 0.5f;
+    private static final float RUN_SPEED = 1.5f;
     private static final float JUMP_FORCE = 1.5f;
 
     private static final float TERRAIN_HEIGHT = 0;
 
-    public Player(TexturedModel model, Vector3f position, Vector3f rotation, Vector3f scale) {
+    public Player(TexturedModel model, Vector3 position, Vector3 rotation, Vector3 scale) {
         super(model, position, rotation, scale, "player");
         useGravity = true;
     }
@@ -45,9 +46,9 @@ public class Player extends Entity{
 
             Vector2f move = forwardVector.mul(horizontal).add(rightVector.mul(vertical));
             move.mul(RUN_SPEED);
-            velocity = new Vector3f(move.x, velocity.y, move.y);
+            velocity = new Vector3(move.x, velocity.y, move.y);
         }else {
-            velocity = new Vector3f(0, velocity.y, 0);
+            velocity = new Vector3(0, velocity.y, 0);
         }
 
         if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_SPACE)){
@@ -59,7 +60,7 @@ public class Player extends Entity{
 
         if (getPosition().y < TERRAIN_HEIGHT){
             grounded = true;
-            velocity = new Vector3f(velocity.x, 0, velocity.z);
+            velocity = new Vector3(velocity.x, 0, velocity.z);
             getPosition().y = TERRAIN_HEIGHT;
         }
     }

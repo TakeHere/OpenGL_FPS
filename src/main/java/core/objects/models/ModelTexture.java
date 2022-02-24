@@ -2,7 +2,7 @@ package core.objects.models;
 
 public class ModelTexture {
 
-    private int textureID;
+    public int textureID;
 
     private float shineDamper = 1;
     private float reflectivity = 0;

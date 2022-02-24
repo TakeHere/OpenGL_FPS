@@ -4,10 +4,13 @@ import core.collision.AABB;
 import core.objects.GameObject;
 import core.objects.models.TexturedModel;
 import core.toolbox.Maths;
+import core.toolbox.RunNextFrame;
+import core.toolbox.Vector3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Entity extends GameObject {
@@ -17,13 +20,11 @@ public class Entity extends GameObject {
     private Matrix4f transformationMatrix;
     private AABB aabb;
 
-    public static final float GRAVITY = -5;
-
     public boolean useGravity = false;
 
-    public static List<Entity> entities = new ArrayList<>();
+    public static List<Entity> entities = Collections.synchronizedList(new ArrayList<>());
 
-    public Entity(TexturedModel model, Vector3f position, Vector3f rotation, Vector3f scale, String name) {
+    public Entity(TexturedModel model, Vector3 position, Vector3 rotation, Vector3 scale, String name) {
         super(position, rotation, scale, name);
         this.model = model;
         updateTransformationMatrix();
@@ -37,7 +38,7 @@ public class Entity extends GameObject {
     }
 
     public void updateTransformationMatrix(){
-        this.transformationMatrix = Maths.createTransformationMatrix(getPosition(), getRotation().x, getRotation().y, getRotation().z, getScale());
+        this.transformationMatrix = Maths.createTransformationMatrix(getPosition().toJomlVector(), getRotation().toJomlVector(), getScale().toJomlVector());
     }
 
     public float getTextureXOffset(){
@@ -64,5 +65,10 @@ public class Entity extends GameObject {
 
     public AABB getAabb() {
         return aabb;
+    }
+
+    public void destroy(){
+        RunNextFrame.runNextFrame(() -> entities.remove(this));
+        super.destroy();
     }
 }

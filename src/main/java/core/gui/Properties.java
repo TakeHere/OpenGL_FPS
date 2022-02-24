@@ -27,7 +27,8 @@ public class Properties {
         ImGui.setNextWindowCollapsed(true, ImGuiCond.Once);
 
         ImGui.begin("Properties", new ImBoolean(true), ImGuiWindowFlags.AlwaysAutoResize);
-        ImGui.setWindowPos(250,10);
+        //ImGui.setWindowPos(250,10);
+        ImGui.setWindowPos(730,10);
 
         ImGui.labelText("Name", objectName);
 
