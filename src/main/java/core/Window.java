@@ -1,5 +1,6 @@
 package core;
 
+import core.animations.AnimationsController;
 import core.gui.ImGuiLayer;
 import core.listeners.KeyListener;
 import core.listeners.MouseListener;
@@ -58,6 +59,7 @@ public class Window {
             currentScene.cleanup();
             Scene.timer.cancel();
             Scene.timer = new Timer();
+            AnimationsController.cleanup();
         }
 
         switch (newScene){
@@ -202,6 +204,8 @@ public class Window {
                 }
 
                 currentScene.update(dt);
+
+                AnimationsController.playAnimations();
             }
 
             if (dt == 0) dt = 0.001f;

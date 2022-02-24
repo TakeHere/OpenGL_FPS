@@ -1,6 +1,7 @@
 package core.scenes;
 
 import core.Consts;
+import core.animations.Animation;
 import core.listeners.MouseListener;
 import core.objects.EntityCreator;
 import core.objects.GameObject;
@@ -22,13 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
+import static core.Consts.radConst;
+
 public class GameScene extends Scene{
 
     private Camera camera;
     private Light sun;
     private List<Light> lights = new ArrayList<>();
 
-    private Entity displayEntity;
     private Entity gun;
     private Player player;
 
@@ -48,14 +50,9 @@ public class GameScene extends Scene{
 
 
         EntityCreator.createEntity(loader, "res/models/axis.obj", "res/textures/axis.png"
-                ,new Vector3(0,40,0),new Vector3(0,0,0),new Vector3(10,10,10), "axis");
+                ,new Vector3(0,0,0),new Vector3(0,0,0),new Vector3(10,10,10), "axis");
 
-        displayEntity = EntityCreator.createEntity(loader, "res/models/debugSphere.obj", "res/textures/red.png"
-                ,new Vector3(0,10,0),new Vector3(0,0,0),new Vector3(10,10,10), "display");
-        displayEntity.getModel().getTexture().setShineDamper(10);
-        displayEntity.getModel().getTexture().setReflectivity(1);
-
-        EntityCreator.createEntity(loader, "res/models/floor.obj", "res/textures/grass.jpg"
+        EntityCreator.createEntity(loader, "res/models/floor.obj", "res/textures/wood.jpg"
                 ,new Vector3(0,1,0), new Vector3(0,0,0), new Vector3(100,5,100), "ground");
 
         gun = EntityCreator.createEntity(loader, "res/models/gun.obj", "res/textures/gunTexture.png",
@@ -84,7 +81,7 @@ public class GameScene extends Scene{
 
         sun = new Light(new Vector3(100,100,100), new Color(255, 255, 255), "sun");
         lights.add(sun);
-        lights.add(new Light(new Vector3(-50,50,-50), new Color(222, 6, 47), new Vector3(1,0.01f, 0.002f), "decoLight"));
+        //lights.add(new Light(new Vector3(-50,50,-50), new Color(222, 6, 47), new Vector3(1,0.01f, 0.002f), "decoLight"));
 
 
 
@@ -100,47 +97,34 @@ public class GameScene extends Scene{
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Target target = new Target(targetModel,
-                        new Vector3(Maths.randomNumberBetween(-20,30), Maths.randomNumberBetween(10,30), Maths.randomNumberBetween(-20,30)),
-                        new Vector3(0,0,0),
-                        new Vector3(10,10,10), "target");
+                if (Target.getTargets().size() < Consts.MAX_TARGETS){
+                    Vector3 position = new Vector3(Maths.randomNumberBetween(-100,100), Maths.randomNumberBetween(20,50), Maths.randomNumberBetween(-100,100));
+                    Vector2 toCenterVector = new Vector2(0,0).sub(new Vector2(position.x, position.z * -1)).normalize();
+                    float angle = (float) Math.toDegrees(Math.atan(toCenterVector.y/toCenterVector.x)) + 90;
+
+                    Target target = new Target(targetModel,
+                            position,
+                            new Vector3(0,angle,0),
+                            new Vector3(10,10,10), "target");
+                }
             }
         }, 0, 2 * 1000);
     }
 
     @Override
     public void update(double dt) {
-        displayEntity.addRotation(new Vector3(0,1,0));
-        displayEntity.addPosition(new Vector3(0, (float) Math.cos(Math.toRadians(System.currentTimeMillis()) / 5) / 10,0));
+        //displayEntity.addRotation(new Vector3(0,1,0));
+        //displayEntity.addPosition(new Vector3(0, (float) Math.cos(Math.toRadians(System.currentTimeMillis()) / 5) / 10,0));
 
         player.move();
         camera.move(player);
-
-        synchronized (Entity.entities){
-            for (Entity collider : Entity.entities) {
-                if (collider instanceof Bullet) continue;
-
-
-                if (collider instanceof Player) continue;
-                if (!(collider instanceof Target)) continue;
-                if (collider == gun) continue;
-
-                for (Entity bullet : Bullet.getBullets()) {
-                    if (Maths.isAabbIntersect(collider.getAabb(), bullet.getAabb())){
-                        collider.destroy();
-                        bullet.destroy();
-
-                        continue;
-                    }
-                }
-            }
-        }
 
         for (Bullet bullet : Bullet.getBullets()) {
             synchronized (Entity.entities){
                 for (Entity collider : Entity.entities) {
                     if (collider instanceof Bullet) continue;
                     if (collider instanceof Player) continue;
+                    if (collider.getName().equalsIgnoreCase("axis")) continue;
                     if (collider == gun) continue;
 
                     if (Maths.isAabbIntersect(collider.getAabb(), bullet.getAabb())){
