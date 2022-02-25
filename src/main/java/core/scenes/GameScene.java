@@ -1,7 +1,6 @@
 package core.scenes;
 
 import core.Consts;
-import core.animations.Animation;
 import core.listeners.MouseListener;
 import core.objects.EntityCreator;
 import core.objects.GameObject;
@@ -11,19 +10,16 @@ import core.objects.models.RawModel;
 import core.objects.models.TexturedModel;
 import core.objects.models.objloader.OBJFileLoader;
 import core.renderers.MasterRenderer;
+import core.sound.AudioSource;
 import core.toolbox.Loader;
 import core.toolbox.Maths;
 import core.toolbox.Vector2;
 import core.toolbox.Vector3;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
-
-import static core.Consts.radConst;
 
 public class GameScene extends Scene{
 
@@ -47,6 +43,10 @@ public class GameScene extends Scene{
         camera.setPosition(new Vector3(0,15,15));
         renderer = new MasterRenderer(camera);
 
+        AudioSource ambientSource = new AudioSource();
+        ambientSource.setLooping(true);
+        ambientSource.setVolume(0.4f);
+        ambientSource.play(Consts.AMBIENT_SOUND);
 
 
         EntityCreator.createEntity(loader, "res/models/axis.obj", "res/textures/axis.png"
@@ -92,6 +92,9 @@ public class GameScene extends Scene{
             bulletEntity.setRotation(new Vector3(camera.getPitch(), 180 - camera.getYaw(), camera.getRoll()));
             bulletEntity.velocity = Maths.forwardVector(cameraRot).mul(5);
             bulletEntity.useGravity = true;
+
+            AudioSource source = new AudioSource();
+            source.play(Consts.SHOOT_SOUND);
         });
 
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -130,6 +133,9 @@ public class GameScene extends Scene{
                     if (Maths.isAabbIntersect(collider.getAabb(), bullet.getAabb())){
                         if (collider instanceof Target){
                             collider.destroy();
+                            AudioSource source = collider.createAudioSource();
+                            source.setVolume(0.4f);
+                            source.play(Consts.BREAK_SOUND);
                         }
 
                         bullet.destroy();

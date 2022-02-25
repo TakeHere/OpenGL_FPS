@@ -1,8 +1,8 @@
 package core.objects;
 
+import core.sound.AudioSource;
 import core.toolbox.RunNextFrame;
 import core.toolbox.Vector3;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +14,7 @@ public class GameObject {
     private Vector3 rotation;
     private Vector3 scale;
     private String name;
+    private AudioSource audioSource = null;
 
     public Vector3 velocity = new Vector3(0,0,0);
 
@@ -26,6 +27,15 @@ public class GameObject {
         this.name = name;
 
         gameObjects.add(this);
+    }
+
+    public AudioSource createAudioSource(){
+        audioSource = new AudioSource();
+        return audioSource;
+    }
+
+    public AudioSource getAudioSource(){
+        return audioSource;
     }
 
     public void addPosition(Vector3 addition){
@@ -68,7 +78,13 @@ public class GameObject {
         this.name = name;
     }
 
+    public Vector3 getVelocity() {
+        return velocity;
+    }
+
     public void destroy(){
-        RunNextFrame.runNextFrame(() -> gameObjects.remove(this));
+        RunNextFrame.runNextFrame(() -> {
+            gameObjects.remove(this);
+        });
     }
 }

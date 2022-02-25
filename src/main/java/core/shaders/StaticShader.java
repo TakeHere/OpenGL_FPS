@@ -2,7 +2,6 @@ package core.shaders;
 
 import core.objects.entities.Camera;
 import core.objects.entities.Light;
-import core.toolbox.Maths;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -89,8 +88,7 @@ public class StaticShader extends ShaderProgram{
     }
 
     public void loadViewMatrix(Camera camera){
-        Matrix4f viewMatrix = Maths.getViewMatrix(camera);
-        super.loadMatrix(location_viewMatrix, viewMatrix);
+        super.loadMatrix(location_viewMatrix, camera.getViewMatrix());
     }
 
     public void loadLights(List<Light> lights){

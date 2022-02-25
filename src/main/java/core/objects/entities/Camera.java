@@ -2,13 +2,12 @@ package core.objects.entities;
 
 import core.Window;
 import core.listeners.KeyListener;
-import core.listeners.MouseListener;
+import core.toolbox.Maths;
 import core.toolbox.Vector2;
 import core.toolbox.Vector3;
 import imgui.internal.ImGui;
 import org.joml.Math;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class Camera {
@@ -24,6 +23,8 @@ public class Camera {
 
     private final float freecamSpeed = 1;
     private final Vector3 offset = new Vector3(0,30,0);
+
+    private Matrix4f viewMatrix;
 
     public void move(Player player){
         if (Window.isMouseLocked()){
@@ -113,5 +114,13 @@ public class Camera {
 
     public Vector3 getOffset() {
         return offset;
+    }
+
+    public Matrix4f getViewMatrix() {
+        return viewMatrix;
+    }
+
+    public void updateViewMatrix(){
+        viewMatrix = Maths.getViewMatrix(this);
     }
 }

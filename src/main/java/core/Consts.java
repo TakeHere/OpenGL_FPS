@@ -1,5 +1,6 @@
 package core;
 
+import core.sound.AudioMaster;
 import core.toolbox.Vector3;
 
 public class Consts {
@@ -9,4 +10,9 @@ public class Consts {
     public static final float radConst = (float) (Math.PI/180);
 
     public static int MAX_TARGETS = 10;
+
+    //Sounds
+    public static int BREAK_SOUND = AudioMaster.loadSound("res/sounds/break.wav");
+    public static int AMBIENT_SOUND = AudioMaster.loadSound("res/sounds/ambient.wav");
+    public static int SHOOT_SOUND = AudioMaster.loadSound("res/sounds/shoot.wav");
 }

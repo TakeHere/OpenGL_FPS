@@ -16,12 +16,12 @@ import core.renderers.debug.DebugSphere;
 import core.scenes.DemoScene;
 import core.scenes.GameScene;
 import core.scenes.Scene;
+import core.sound.AudioMaster;
 import core.toolbox.Loader;
 import core.toolbox.RunNextFrame;
 import core.toolbox.Time;
 import imgui.internal.ImGui;
 import org.lwjgl.Version;
-import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
@@ -135,6 +135,8 @@ public class Window {
 
         this.imGuiLayer = new ImGuiLayer(glfwWindow);
         imGuiLayer.initImGui();
+
+        AudioMaster.init();
     }
 
     int fps;
@@ -200,6 +202,10 @@ public class Window {
                 synchronized (GameObject.gameObjects){
                     for (GameObject gameObject : GameObject.gameObjects) {
                         gameObject.addPosition(gameObject.velocity);
+                        if (gameObject.getAudioSource() != null){
+                            gameObject.getAudioSource().setPosition(gameObject.getPosition());
+                            gameObject.getAudioSource().setVelocity(gameObject.getVelocity());
+                        }
                     }
                 }
 
@@ -231,6 +237,7 @@ public class Window {
             }
         }
 
+        AudioMaster.cleanUp();
         currentScene.cleanup();
         imGuiLayer.destroyImGui();
     }
