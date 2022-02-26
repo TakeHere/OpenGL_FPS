@@ -64,6 +64,7 @@ public class MasterRenderer {
         shader.loadLights(lights);
         camera.updateViewMatrix();
         AudioMaster.setListenerData(camera);
+        AudioMaster.destroyUnusedAudio();
         shader.loadViewMatrix(camera);
         entityRenderer.render(entities);
         debugRenderer.render(debugSpheres);

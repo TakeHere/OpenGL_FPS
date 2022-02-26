@@ -8,6 +8,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.lwjgl.openal.ALC10.*;
@@ -19,6 +20,7 @@ public class AudioMaster {
     private static long context;
 
     private static List<Integer> buffers = new ArrayList<>();
+    public static List<AudioSource> unusedAudio = new ArrayList<>();
 
     public static void init(){
         device = alcOpenDevice((ByteBuffer) null);
@@ -51,6 +53,18 @@ public class AudioMaster {
         AL10.alListenerfv(AL10.AL_ORIENTATION, listenerOrientation);
         AL10.alListener3f(AL10.AL_VELOCITY, 0,0,0);
         AL10.alListenerf(AL10.AL_GAIN, 0.6f);
+    }
+
+    public static void destroyUnusedAudio(){
+        Iterator i = unusedAudio.iterator();
+        AudioSource source;
+        while (i.hasNext()) {
+            source = (AudioSource) i.next();
+            if (!source.isPlaying()) {
+                source.delete();
+                i.remove();
+            }
+        }
     }
 
     public static int loadSound(String file){

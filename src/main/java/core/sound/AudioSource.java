@@ -27,6 +27,14 @@ public class AudioSource {
         AL10.alSourceStop(sourceId);
     }
 
+    public void autoDestroy(boolean bool){
+        if (bool){
+            AudioMaster.unusedAudio.add(this);
+        }else {
+            AudioMaster.unusedAudio.remove(this);
+        }
+    }
+
     public void delete(){
         stop();
         AL10.alDeleteSources(sourceId);

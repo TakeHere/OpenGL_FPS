@@ -22,7 +22,11 @@ public class Bullet extends Entity{
     }
 
     public void destroy(){
-        RunNextFrame.runNextFrame(() -> bullets.remove(this));
+        RunNextFrame.runNextFrame(() -> {
+            if (getAudioSource() != null)
+                getAudioSource().delete();
+            bullets.remove(this);
+        });
         super.destroy();
     }
 }

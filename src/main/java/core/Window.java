@@ -47,7 +47,7 @@ public class Window {
     private static boolean mouseLocked = false;
 
     private Window(){
-        this.title = "Ethereal";
+        this.title = "JavaFPS";
     }
 
     public static void changeScene(int newScene){

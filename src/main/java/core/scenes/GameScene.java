@@ -95,6 +95,7 @@ public class GameScene extends Scene{
 
             AudioSource source = new AudioSource();
             source.play(Consts.SHOOT_SOUND);
+            source.autoDestroy(true);
         });
 
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -136,6 +137,7 @@ public class GameScene extends Scene{
                             AudioSource source = collider.createAudioSource();
                             source.setVolume(0.4f);
                             source.play(Consts.BREAK_SOUND);
+                            source.autoDestroy(true);
                         }
 
                         bullet.destroy();
