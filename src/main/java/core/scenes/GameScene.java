@@ -10,6 +10,7 @@ import core.objects.models.RawModel;
 import core.objects.models.TexturedModel;
 import core.objects.models.objloader.OBJFileLoader;
 import core.renderers.MasterRenderer;
+import core.sound.AudioMaster;
 import core.sound.AudioSource;
 import core.toolbox.Loader;
 import core.toolbox.Maths;
@@ -59,8 +60,8 @@ public class GameScene extends Scene{
                 new Vector3(0,0,0), new Vector3(0,0,0), new Vector3(3,3,3), "gun");
 
         player = new Player(new TexturedModel(
-                OBJFileLoader.loadOBJ("res/models/player.obj", loader),
-                new ModelTexture(loader.loadTexture("res/textures/yellow.png"))),
+                OBJFileLoader.loadOBJ("res/models/floor.obj", loader),
+                new ModelTexture(loader.loadTexture("res/textures/transparent.png"))),
                 new Vector3(0,1,0),
                 new Vector3(0,0,0),
                 new Vector3(10,10,10));
@@ -117,9 +118,6 @@ public class GameScene extends Scene{
 
     @Override
     public void update(double dt) {
-        //displayEntity.addRotation(new Vector3(0,1,0));
-        //displayEntity.addPosition(new Vector3(0, (float) Math.cos(Math.toRadians(System.currentTimeMillis()) / 5) / 10,0));
-
         player.move();
         camera.move(player);
 
@@ -174,6 +172,7 @@ public class GameScene extends Scene{
     public void cleanup() {
         loader.cleanup();
         renderer.cleanup();
+        AudioMaster.deleteAllSources();
 
         Entity.entities.clear();
         GameObject.gameObjects.clear();

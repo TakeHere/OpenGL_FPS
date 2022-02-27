@@ -13,8 +13,8 @@ import core.objects.models.RawModel;
 import core.objects.models.TexturedModel;
 import core.objects.models.objloader.OBJFileLoader;
 import core.renderers.debug.DebugSphere;
-import core.scenes.DemoScene;
 import core.scenes.GameScene;
+import core.scenes.MenuScene;
 import core.scenes.Scene;
 import core.sound.AudioMaster;
 import core.toolbox.Loader;
@@ -64,7 +64,7 @@ public class Window {
 
         switch (newScene){
             case 0:
-                currentScene = new DemoScene();
+                currentScene = new MenuScene();
                 currentScene.init();
                 break;
             case 1:
@@ -166,7 +166,7 @@ public class Window {
         DebugSphere.yellowTexture = new TexturedModel(rawModel, yellowTexture);
         DebugSphere.blueTexture = new TexturedModel(rawModel, blueTexture);
 
-        changeScene(1);
+        changeScene(0);
 
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents();
@@ -177,12 +177,6 @@ public class Window {
             }else if (KeyListener.isKeyPressed(GLFW_KEY_ESCAPE)){
                 glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 mouseLocked = false;
-            }
-
-            if (KeyListener.isKeyPressed(GLFW_KEY_PAGE_UP)){
-                changeScene(1);
-            }else if (KeyListener.isKeyPressed(GLFW_KEY_PAGE_DOWN)){
-                changeScene(0);
             }
 
             if (dt >= 0){

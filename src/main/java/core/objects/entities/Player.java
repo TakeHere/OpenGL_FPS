@@ -1,11 +1,9 @@
 package core.objects.entities;
 
 import core.listeners.KeyListener;
-import core.listeners.MouseListener;
 import core.objects.models.TexturedModel;
 import core.toolbox.Vector3;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public class Player extends Entity{
@@ -51,17 +49,17 @@ public class Player extends Entity{
             velocity = new Vector3(0, velocity.y, 0);
         }
 
+        if (getPosition().y < TERRAIN_HEIGHT){
+            grounded = true;
+            velocity = new Vector3(velocity.x, 0, velocity.z);
+            getPosition().y = TERRAIN_HEIGHT;
+        }
+
         if (KeyListener.isKeyPressed(GLFW.GLFW_KEY_SPACE)){
             if (grounded){
                 velocity.y += JUMP_FORCE;
                 grounded = false;
             }
-        }
-
-        if (getPosition().y < TERRAIN_HEIGHT){
-            grounded = true;
-            velocity = new Vector3(velocity.x, 0, velocity.z);
-            getPosition().y = TERRAIN_HEIGHT;
         }
     }
 }

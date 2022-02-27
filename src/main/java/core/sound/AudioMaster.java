@@ -21,6 +21,7 @@ public class AudioMaster {
 
     private static List<Integer> buffers = new ArrayList<>();
     public static List<AudioSource> unusedAudio = new ArrayList<>();
+    public static List<AudioSource> audioSources = new ArrayList<>();
 
     public static void init(){
         device = alcOpenDevice((ByteBuffer) null);
@@ -74,6 +75,14 @@ public class AudioMaster {
         AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
         waveFile.dispose();
         return buffer;
+    }
+
+    public static void deleteAllSources(){
+        for (AudioSource audioSource : audioSources) {
+            audioSource.delete();
+        }
+
+        audioSources.clear();
     }
 
     public static void cleanUp(){

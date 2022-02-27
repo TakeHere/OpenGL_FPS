@@ -15,4 +15,5 @@ public class Consts {
     public static int BREAK_SOUND = AudioMaster.loadSound("res/sounds/break.wav");
     public static int AMBIENT_SOUND = AudioMaster.loadSound("res/sounds/ambient.wav");
     public static int SHOOT_SOUND = AudioMaster.loadSound("res/sounds/shoot.wav");
+    public static int MENU_MUSIC = AudioMaster.loadSound("res/sounds/menuMusic.wav");
 }

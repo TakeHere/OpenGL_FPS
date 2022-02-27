@@ -13,6 +13,8 @@ public class AudioSource {
         AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 50);
         AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, 400);
         setVolume(1);
+
+        AudioMaster.audioSources.add(this);
     }
 
     public void pause(){
