@@ -39,7 +39,6 @@ void main(void){
 
     surfaceNormal = mat3(transpose(inverse(transformationMatrix))) * actualNormal;
     //surfaceNormal = (transformationMatrix * vec4(actualNormal, 1.0)).xyz;
-    //surfaceNormal = (transformationMatrix * vec4(actualNormal, 1.0)).xyz;
     for(int i = 0 ; i<4 ; i++){
         toLightVector[i] = lightPosition[i] - worldPosition.xyz;
     }

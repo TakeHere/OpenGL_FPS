@@ -10,8 +10,8 @@ import core.objects.models.RawModel;
 import core.objects.models.TexturedModel;
 import core.objects.models.objloader.OBJFileLoader;
 import core.renderers.MasterRenderer;
-import core.sound.AudioMaster;
-import core.sound.AudioSource;
+import core.audio.AudioMaster;
+import core.audio.AudioSource;
 import core.toolbox.Loader;
 import core.toolbox.Maths;
 import core.toolbox.Vector2;
@@ -49,9 +49,10 @@ public class GameScene extends Scene{
         ambientSource.setVolume(0.4f);
         ambientSource.play(Consts.AMBIENT_SOUND);
 
-
-        EntityCreator.createEntity(loader, "res/models/axis.obj", "res/textures/axis.png"
-                ,new Vector3(0,0,0),new Vector3(0,0,0),new Vector3(10,10,10), "axis");
+        if (Consts.DEBUG){
+            EntityCreator.createEntity(loader, "res/models/axis.obj", "res/textures/axis.png"
+                    ,new Vector3(0,0,0),new Vector3(0,0,0),new Vector3(3,3,3), "axis");
+        }
 
         EntityCreator.createEntity(loader, "res/models/floor.obj", "res/textures/wood.jpg"
                 ,new Vector3(0,1,0), new Vector3(0,0,0), new Vector3(100,5,100), "ground");
@@ -84,7 +85,14 @@ public class GameScene extends Scene{
         lights.add(sun);
         //lights.add(new Light(new Vector3(-50,50,-50), new Color(222, 6, 47), new Vector3(1,0.01f, 0.002f), "decoLight"));
 
+        Entity displayEntity = EntityCreator.createEntity(loader, "res/models/teapot.obj", "res/textures/yellow.png"
+                ,new Vector3(0,30,100),new Vector3(0,0,0),new Vector3(10,10,10), "display");
+        displayEntity.getModel().getTexture().setShineDamper(10);
+        displayEntity.getModel().getTexture().setReflectivity(1);
 
+        AudioSource teapotSource = displayEntity.createAudioSource();
+        teapotSource.setLooping(true);
+        teapotSource.play(Consts.BREAK_SOUND);
 
         MouseListener.addPressEvent(0, () -> {
             Vector3 cameraRot = new Vector3(camera.getPitch(), camera.getYaw(), camera.getRoll());
@@ -94,8 +102,8 @@ public class GameScene extends Scene{
             bulletEntity.velocity = Maths.forwardVector(cameraRot).mul(5);
             bulletEntity.useGravity = true;
 
-            AudioSource source = new AudioSource();
-            source.play(Consts.SHOOT_SOUND);
+            AudioSource source = bulletEntity.createAudioSource();
+            source.play(Consts.BREAK_SOUND);
             source.autoDestroy(true);
         });
 
@@ -114,6 +122,21 @@ public class GameScene extends Scene{
                 }
             }
         }, 0, 2 * 1000);
+
+        /*
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Bullet bulletEntity = new Bullet(bulletModel, new Vector3(0,0,0), new Vector3(0,0,0), new Vector3(1,1,1), "bullet");
+                bulletEntity.velocity = new Vector3(0,0,0);
+                bulletEntity.useGravity = false;
+
+                AudioSource source = new AudioSource();
+                source.play(Consts.SHOOT_SOUND);
+                source.autoDestroy(true);
+            }
+        }, 0, 1000);
+         */
     }
 
     @Override

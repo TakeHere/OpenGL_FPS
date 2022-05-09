@@ -1,4 +1,4 @@
-package core.sound;
+package core.audio;
 
 import core.objects.entities.Camera;
 import org.lwjgl.openal.*;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.lwjgl.openal.AL10.AL_ORIENTATION;
+import static org.lwjgl.openal.AL10.alListenerfv;
 import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -40,20 +42,27 @@ public class AudioMaster {
     }
 
     public static void setListenerData(Camera camera){
+        AL10.alListener3f(AL10.AL_POSITION, camera.getPosition().x,camera.getPosition().y,camera.getPosition().z);
+
+        float xOffset = (float) Math.sin(Math.toRadians(camera.getYaw()));
+        float zOffset = -1.0f * (float) Math.cos(Math.toRadians(camera.getYaw()));
+        setListenerOrientation(xOffset,0,zOffset,0,1,0);
+
+        AL10.alListenerf(AL10.AL_GAIN, 0.6f);
+    }
+
+    public static void setListenerOrientation(float lookX, float lookY, float lookZ, float upX, float upY, float upZ ){
         ByteBuffer bb = ByteBuffer.allocateDirect( 6 * 4);
         bb.order( ByteOrder.nativeOrder() );
         FloatBuffer listenerOrientation = bb.asFloatBuffer();
-        listenerOrientation.put( 0, camera.getViewMatrix().m01() );
-        listenerOrientation.put( 1, camera.getViewMatrix().m02() );
-        listenerOrientation.put( 2, camera.getViewMatrix().m03() );
-        listenerOrientation.put( 3, camera.getViewMatrix().m11() );
-        listenerOrientation.put( 4, camera.getViewMatrix().m12() );
-        listenerOrientation.put( 5, camera.getViewMatrix().m13() );
+        listenerOrientation.put( 0, lookX );
+        listenerOrientation.put( 1, lookY );
+        listenerOrientation.put( 2, lookZ );
+        listenerOrientation.put( 3, upX );
+        listenerOrientation.put( 4, upY );
+        listenerOrientation.put( 5, upZ );
 
-        AL10.alListener3f(AL10.AL_POSITION, camera.getPosition().x,camera.getPosition().y,camera.getPosition().z);
-        AL10.alListenerfv(AL10.AL_ORIENTATION, listenerOrientation);
-        AL10.alListener3f(AL10.AL_VELOCITY, 0,0,0);
-        AL10.alListenerf(AL10.AL_GAIN, 0.6f);
+        alListenerfv( AL_ORIENTATION, listenerOrientation);
     }
 
     public static void destroyUnusedAudio(){

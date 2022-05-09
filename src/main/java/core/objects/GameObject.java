@@ -1,6 +1,6 @@
 package core.objects;
 
-import core.sound.AudioSource;
+import core.audio.AudioSource;
 import core.toolbox.RunNextFrame;
 import core.toolbox.Vector3;
 

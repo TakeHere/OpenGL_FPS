@@ -8,7 +8,7 @@ import core.objects.models.TexturedModel;
 import core.renderers.debug.DebugRenderer;
 import core.renderers.debug.DebugSphere;
 import core.shaders.StaticShader;
-import core.sound.AudioMaster;
+import core.audio.AudioMaster;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 

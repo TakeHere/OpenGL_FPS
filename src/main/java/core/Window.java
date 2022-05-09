@@ -16,7 +16,7 @@ import core.renderers.debug.DebugSphere;
 import core.scenes.GameScene;
 import core.scenes.MenuScene;
 import core.scenes.Scene;
-import core.sound.AudioMaster;
+import core.audio.AudioMaster;
 import core.toolbox.Loader;
 import core.toolbox.RunNextFrame;
 import core.toolbox.Time;

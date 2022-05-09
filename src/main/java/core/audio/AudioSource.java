@@ -1,4 +1,4 @@
-package core.sound;
+package core.audio;
 
 import core.toolbox.Vector3;
 import org.lwjgl.openal.AL10;
@@ -9,9 +9,9 @@ public class AudioSource {
 
     public AudioSource(){
         sourceId = AL10.alGenSources();
-        AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
-        AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 50);
-        AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, 400);
+        //AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
+        //AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 50);
+        //AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, 400);
         setVolume(1);
 
         AudioMaster.audioSources.add(this);
