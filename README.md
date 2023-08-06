@@ -1,4 +1,4 @@
-# JavaFPS
+# OpenGL FPS
 
 [⚠️]: FPS game made in Java using OpenGL and LWJGL (Homemade engine)
 
