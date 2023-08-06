@@ -1,4 +1,5 @@
 # JavaFPS
-First person shooter made in Java using lwjgl and opengl
 
-![showcase](https://i.ibb.co/94qsjzD/java-b-LXZ20ni-Gl.gif)
+[⚠️]: FPS game made in Java using OpenGL and LWJGL (Homemade engine)
+
+![showcase](https://github.com/TakeHere/JavaFPS/blob/main/Demo.gif)
